@@ -49,6 +49,7 @@ class Curl {
     }
 
     public function addHttpHeaders(array $headers): void {
+echo '$headers in Curl::addHttpHeaders', PHP_EOL, var_export($headers, true), PHP_EOL;
         $this->options[CURLOPT_HTTPHEADER] = $headers;
     }
 
@@ -81,6 +82,7 @@ class Curl {
      * @throws CurlException
      */
     public function exec(): string {
+echo '$this->url in Curl::exec', PHP_EOL, var_export($this->url, true), PHP_EOL;
         $ch = curl_init($this->url);
         assert($ch !== false);
         curl_setopt_array($ch, $this->options);
@@ -90,7 +92,7 @@ class Curl {
         if ($result === false) {
             throw new CurlException(curl_error($ch), curl_errno($ch));
         }
-
+echo '$result in Curl::exec', PHP_EOL, var_export($result, true), PHP_EOL;
         return (string)$result;
     }
 

@@ -100,6 +100,7 @@ class CurlHttpClient implements HttpClient {
      * @param resource $ch
      */
     public function handleHeaderInput($ch, string $line): int {
+echo '$line in CurlHttpClient::handleHeaderInput', PHP_EOL, var_export($line, true), PHP_EOL;
         $parts = explode(':', trim($line));
 
         if (!isset($parts[1])) {
@@ -190,6 +191,7 @@ class CurlHttpClient implements HttpClient {
     }
 
     private function parseRateLimitHeaders(): ?RateLimit {
+echo '$this->rateLimitHeaders in CurlHttpClient::parseRateLimitHeaders', PHP_EOL, var_export($this->rateLimitHeaders, true), PHP_EOL;
         $required = ['Limit', 'Remaining', 'Reset'];
         $existing = array_keys($this->rateLimitHeaders);
 
