@@ -1,0 +1,43 @@
+name: "Issue 374"
+
+on:
+  push:
+
+jobs:
+  issue-374-phar:
+    name: "Test issue 374 PHAR"
+    runs-on: windows-latest
+
+    steps:
+      - name: "Checkout"
+        uses: "actions/checkout@v3"
+
+      - name: "Set up PHP"
+        uses: "shivammathur/setup-php@v2"
+        with:
+          ini-values: "display_errors=On, error_reporting=-1, memory_limit=2G"
+          php-version: "latest"
+          tools: phive
+
+      - name: "Phive selfupdate"
+        run: phive selfupdate
+
+  issue-374-src:
+    name: "Test issue 374 src"
+    runs-on: windows-latest
+
+    steps:
+      - name: "Checkout"
+        uses: "actions/checkout@v3"
+
+      - name: "Set up PHP"
+        uses: "shivammathur/setup-php@v2"
+        with:
+          ini-values: "display_errors=On, error_reporting=-1, memory_limit=2G"
+          php-version: "latest"
+
+      - name: "Install dependencies with composer"
+        run: "composer install --no-interaction --prefer-source"
+
+      - name: "Phive selfupdate"
+        run: php ./phive selfupdate
