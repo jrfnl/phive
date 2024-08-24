@@ -10,9 +10,13 @@
  */
 namespace PharIo\Phive;
 
+use const CURLINFO_HEADER_SIZE;
 use const CURLINFO_HTTP_CODE;
+use const CURLHEADER_UNIFIED;
 use const CURLOPT_CAINFO;
+use const CURLOPT_HEADER;
 use const CURLOPT_HEADERFUNCTION;
+use const CURLOPT_HEADEROPT;
 use const CURLOPT_HTTPHEADER;
 use const CURLOPT_NOBODY;
 use const CURLOPT_NOPROGRESS;
@@ -71,6 +75,9 @@ echo '$headers in Curl::addHttpHeaders', PHP_EOL, var_export($headers, true), PH
     }
 
     public function setHeaderFunction(callable $headerFunction): void {
+echo 'CURLOPT_HEADERFUNCTION added to options',PHP_EOL;
+        $this->options[CURLOPT_HEADER] = true;
+//      $this->options[CURLOPT_HEADEROPT] = CURLHEADER_UNIFIED;
         $this->options[CURLOPT_HEADERFUNCTION] = $headerFunction;
     }
 
@@ -85,14 +92,18 @@ echo '$headers in Curl::addHttpHeaders', PHP_EOL, var_export($headers, true), PH
 echo '$this->url in Curl::exec', PHP_EOL, var_export($this->url, true), PHP_EOL;
         $ch = curl_init($this->url);
         assert($ch !== false);
+echo '$this->options keys in Curl::exec before curl_setopt_array', PHP_EOL, var_export(array_keys($this->options), true), PHP_EOL;
         curl_setopt_array($ch, $this->options);
         $result         = curl_exec($ch);
+echo '$result in Curl::exec', PHP_EOL, var_export($result, true), PHP_EOL;
         $this->httpCode = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
+echo '$this->httpCode in Curl::exec', PHP_EOL, var_export($this->httpCode, true), PHP_EOL;
+echo 'Received header size in Curl::exec: ',PHP_EOL, var_export(curl_getinfo($ch, CURLINFO_HEADER_SIZE), true), PHP_EOL;
 
         if ($result === false) {
             throw new CurlException(curl_error($ch), curl_errno($ch));
         }
-echo '$result in Curl::exec', PHP_EOL, var_export($result, true), PHP_EOL;
+
         return (string)$result;
     }
 
