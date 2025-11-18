@@ -3,8 +3,8 @@ name: "Integrate"
 on:
   pull_request: null
   push:
-    branches:
-      - "master"
+#    branches:
+#      - "master"
 
 jobs:
   quality-assurance:
@@ -51,6 +51,7 @@ jobs:
     runs-on: "${{ matrix.operating-system }}"
 
     strategy:
+      fail-fast: false
       matrix:
         operating-system:
           - "macos-latest"
@@ -112,6 +113,7 @@ jobs:
     runs-on: "${{ matrix.operating-system }}"
 
     strategy:
+      fail-fast: false
       matrix:
         operating-system:
           - "macos-latest"
