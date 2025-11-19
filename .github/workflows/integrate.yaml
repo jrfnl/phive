@@ -37,6 +37,8 @@ jobs:
         run: "phive install --copy --trust-gpg-keys 4AA394086372C20A,2A8299CE842DD38C,CF1A108D0E7AE720,2DE50EB60C013FFFA831040D12CE0F1D262429A5,E82B2FB314E9906E,51C67305FFC2E5C0,CBB3D576F2A0946F"
 
       - name: "Run friendsofphp/php-cs-fixer"
+        env:
+          PHP_CS_FIXER_IGNORE_ENV: "true"
         run: "./tools/php-cs-fixer fix --dry-run"
 
       - name: "Run phpstan/phpstan"
